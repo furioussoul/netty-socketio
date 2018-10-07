@@ -211,5 +211,4 @@ public class WebSocketTransport extends ChannelInboundHandlerAdapter {
         }
         return protocol + req.headers().get(HttpHeaders.Names.HOST) + req.getUri();
     }
-
 }

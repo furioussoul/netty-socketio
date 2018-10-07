@@ -112,7 +112,7 @@ public class Namespace implements SocketIONamespace {
         if (entry == null) {
             entry = new EventEntry<T>();
             EventEntry<?> oldEntry = eventListeners.putIfAbsent(eventName, entry);
-            if (oldEntry != null) {
+            if (oldEntry != null) { //todo ??
                 entry = oldEntry;
             }
         }

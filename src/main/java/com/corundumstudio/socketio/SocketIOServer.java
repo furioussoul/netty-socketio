@@ -249,6 +249,4 @@ public class SocketIOServer implements ClientListeners {
     public void addListeners(Object listeners, Class listenersClass) {
         mainNamespace.addListeners(listeners, listenersClass);
     }
-
-
 }

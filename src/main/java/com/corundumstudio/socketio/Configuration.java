@@ -83,7 +83,7 @@ public class Configuration {
     /**
      * Defend from further modifications by cloning
      *
-     * @param configuration - Configuration object to clone
+     * @param conf - Configuration object to clone
      */
     Configuration(Configuration conf) {
         setBossThreads(conf.getBossThreads());
@@ -194,7 +194,7 @@ public class Configuration {
     /**
      * Ping interval
      *
-     * @param value - time in milliseconds
+     * @param heartbeatIntervalSecs - time in milliseconds
      */
     public void setPingInterval(int heartbeatIntervalSecs) {
         this.pingInterval = heartbeatIntervalSecs;
@@ -207,7 +207,7 @@ public class Configuration {
      * Ping timeout
      * Use <code>0</code> to disable it
      *
-     * @param value - time in milliseconds
+     * @param heartbeatTimeoutSecs - time in milliseconds
      */
     public void setPingTimeout(int heartbeatTimeoutSecs) {
         this.pingTimeout = heartbeatTimeoutSecs;
@@ -281,7 +281,7 @@ public class Configuration {
     /**
      * Set maximum http content length limit
      *
-     * @param maxContentLength
+     * @param value
      *        the maximum length of the aggregated http content.
      */
     public void setMaxHttpContentLength(int value) {
@@ -343,7 +343,7 @@ public class Configuration {
      * Data store - used to store session data and implements distributed pubsub.
      * Default is {@code MemoryStoreFactory}
      *
-     * @param storeFactory - implements StoreFactory
+     * @param clientStoreFactory - implements StoreFactory
      *
      * @see com.corundumstudio.socketio.store.MemoryStoreFactory
      * @see com.corundumstudio.socketio.store.RedissonStoreFactory
@@ -439,7 +439,7 @@ public class Configuration {
     /**
      * Set maximum websocket frame content length limit
      *
-     * @param maxContentLength
+     * @param maxFramePayloadLength
      */
     public void setMaxFramePayloadLength(int maxFramePayloadLength) {
         this.maxFramePayloadLength = maxFramePayloadLength;
