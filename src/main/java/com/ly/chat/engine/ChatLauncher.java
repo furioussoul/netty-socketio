@@ -31,10 +31,10 @@ public class ChatLauncher {
         });
 
         server.start();
-
-        Thread.sleep(Integer.MAX_VALUE);
-
-        server.stop();
+//
+//        Thread.sleep(Integer.MAX_VALUE);
+//
+//        server.stop();
     }
 
 }
