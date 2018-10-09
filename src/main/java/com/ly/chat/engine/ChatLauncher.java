@@ -13,7 +13,7 @@ public class ChatLauncher {
 
         Configuration config = new Configuration();
         config.setHostname("47.97.220.227");
-        config.setPort(8081);
+        config.setPort(9292);
 
         final SocketIOServer server = new SocketIOServer(config);
         server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
