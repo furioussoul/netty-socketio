@@ -12,7 +12,7 @@ public class ChatLauncher {
     public static void main(String[] args) throws InterruptedException {
 
         Configuration config = new Configuration();
-        config.setHostname("47.97.220.227");
+        config.setHostname("172.16.75.62");
         config.setPort(9292);
 
         final SocketIOServer server = new SocketIOServer(config);
