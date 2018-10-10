@@ -7,12 +7,18 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ChatLauncher {
+
+    static Map<String,Object> multiple = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
 
         Configuration config = new Configuration();
-        config.setHostname("172.16.75.62");
+        config.setHostname("localhost");
         config.setPort(9292);
 
         final SocketIOServer server = new SocketIOServer(config);
@@ -26,6 +32,10 @@ public class ChatLauncher {
         server.addConnectListener(new ConnectListener() {
             @Override
             public void onConnect(SocketIOClient client) {
+                List<String> token = client.getHandshakeData().getUrlParams().get("token");
+                if(null != token && token.size() != 0){
+                    multiple.put(token.get(0),client);
+                }
                 server.getBroadcastOperations().sendEvent("connect", client.getSessionId());
             }
         });
