@@ -23,7 +23,7 @@ public class ChatLauncher {
         final int[] receivedCount = {0};
 
         Configuration config = new Configuration();
-        config.setHostname("localhost");
+        config.setHostname("172.16.75.62");
         config.setPort(9292);
         config.setBossThreads(1);
         config.setWorkerThreads(8);
