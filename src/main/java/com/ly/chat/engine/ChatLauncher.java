@@ -6,6 +6,8 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -13,10 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatLauncher {
 
-    static Map<String,Object> multiple = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
+        final Logger log = LoggerFactory.getLogger(ChatLauncher.class);
 
+        Map<String,Object> multiple = new ConcurrentHashMap<>();
+        final int[] receivedCount = {0};
+        
         Configuration config = new Configuration();
         config.setHostname("localhost");
         config.setPort(9292);
@@ -25,6 +30,8 @@ public class ChatLauncher {
         server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
             @Override
             public void onData(SocketIOClient client, ChatObject data, AckRequest ackRequest) {
+                receivedCount[0]++;
+                log.warn("receivedCount: " + receivedCount[0]);
                 server.getBroadcastOperations().sendEvent("chatevent", data);
             }
         });
