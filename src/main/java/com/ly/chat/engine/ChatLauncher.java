@@ -21,17 +21,19 @@ public class ChatLauncher {
 
         Map<String,Object> multiple = new ConcurrentHashMap<>();
         final int[] receivedCount = {0};
-        
+
         Configuration config = new Configuration();
         config.setHostname("localhost");
         config.setPort(9292);
+        config.setBossThreads(1);
+        config.setWorkerThreads(8);
 
         final SocketIOServer server = new SocketIOServer(config);
         server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
             @Override
             public void onData(SocketIOClient client, ChatObject data, AckRequest ackRequest) {
                 receivedCount[0]++;
-                log.warn("receivedCount: " + receivedCount[0]);
+                log.debug("receivedCount: " + receivedCount[0]);
                 server.getBroadcastOperations().sendEvent("chatevent", data);
             }
         });
