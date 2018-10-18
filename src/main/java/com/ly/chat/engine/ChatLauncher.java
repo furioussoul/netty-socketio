@@ -6,11 +6,18 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.store.pubsub.ConnectMessage;
+import com.corundumstudio.socketio.store.pubsub.PubSubListener;
+import com.corundumstudio.socketio.store.pubsub.PubSubMessage;
+import com.corundumstudio.socketio.store.pubsub.PubSubStore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatLauncher {
@@ -23,20 +30,33 @@ public class ChatLauncher {
         final int[] receivedCount = {0};
 
         Configuration config = new Configuration();
-        config.setHostname("172.16.75.62");
+        config.setHostname("localhost");
         config.setPort(9292);
         config.setBossThreads(1);
         config.setWorkerThreads(8);
 
         final SocketIOServer server = new SocketIOServer(config);
+
         server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
             @Override
             public void onData(SocketIOClient client, ChatObject data, AckRequest ackRequest) {
                 receivedCount[0]++;
                 log.debug("receivedCount: " + receivedCount[0]);
                 server.getBroadcastOperations().sendEvent("chatevent", data);
+                System.out.println(server.getClient(UUID.fromString(data.getSessionId())));
             }
         });
+
+        server.getConfiguration().getStoreFactory().pubSubStore().subscribe(PubSubStore.CONNECT, new PubSubListener<ConnectMessage>() {
+            @Override
+            public void onMessage(ConnectMessage data) {
+                try {
+                    System.out.println(new ObjectMapper().writeValueAsString(data));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        },ConnectMessage.class);
 
         server.addConnectListener(new ConnectListener() {
             @Override
@@ -45,7 +65,9 @@ public class ChatLauncher {
                 if(null != token && token.size() != 0){
                     multiple.put(token.get(0),client);
                 }
-                server.getBroadcastOperations().sendEvent("connect", client.getSessionId());
+
+                server.getConfiguration().getStoreFactory().pubSubStore().publish(PubSubStore.CONNECT, new ConnectMessage(client.getSessionId()));
+
             }
         });
 

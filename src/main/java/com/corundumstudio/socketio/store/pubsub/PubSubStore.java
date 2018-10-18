@@ -37,5 +37,4 @@ public interface PubSubStore {
     void unsubscribe(String name);
 
     void shutdown();
-
 }

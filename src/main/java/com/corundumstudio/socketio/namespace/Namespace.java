@@ -338,5 +338,4 @@ public class Namespace implements SocketIONamespace {
     public SocketIOClient getClient(UUID uuid) {
         return allClients.get(uuid);
     }
-
 }
