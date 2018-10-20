@@ -4,13 +4,24 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.handler.AuthorizeHandler;
+import com.corundumstudio.socketio.handler.ClientHead;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.namespace.NamespacesHub;
+import com.corundumstudio.socketio.protocol.JsonSupport;
+import com.corundumstudio.socketio.store.RedissonStoreFactory;
+import com.corundumstudio.socketio.store.Store;
+import com.corundumstudio.socketio.store.StoreFactory;
 import com.corundumstudio.socketio.store.pubsub.ConnectMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubListener;
 import com.corundumstudio.socketio.store.pubsub.PubSubStore;
+import com.corundumstudio.socketio.store.pubsub.PubSubType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +45,11 @@ public class ChatLauncher {
         config.setBossThreads(1);
         config.setWorkerThreads(8);
 
+        Config rConfig = new Config();
+        rConfig.useSingleServer().setAddress("redis://47.97.220.227:6379");
+        RedissonClient redissonClient = Redisson.create(rConfig);
+        config.setStoreFactory(new RedissonStoreFactory(redissonClient));
+
         final SocketIOServer server = new SocketIOServer(config);
 
         server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
@@ -42,11 +58,11 @@ public class ChatLauncher {
                 receivedCount[0]++;
                 log.debug("receivedCount: " + receivedCount[0]);
                 server.getBroadcastOperations().sendEvent("chatevent", data);
-                System.out.println(server.getClient(UUID.fromString(data.getSessionId())));
+//                System.out.println(server.getClient(UUID.fromString(data.getSessionId())));
             }
         });
 
-        server.getConfiguration().getStoreFactory().pubSubStore().subscribe(PubSubStore.CONNECT, new PubSubListener<ConnectMessage>() {
+        server.getConfiguration().getStoreFactory().pubSubStore().subscribe(PubSubType.CONNECT, new PubSubListener<ConnectMessage>() {
             @Override
             public void onMessage(ConnectMessage data) {
                 try {
@@ -65,7 +81,7 @@ public class ChatLauncher {
                     multiple.put(token.get(0),client);
                 }
 
-                server.getConfiguration().getStoreFactory().pubSubStore().publish(PubSubStore.CONNECT, new ConnectMessage(client.getSessionId()));
+                server.getConfiguration().getStoreFactory().pubSubStore().publish(PubSubType.CONNECT, new ConnectMessage(client.getSessionId()));
 
             }
         });
