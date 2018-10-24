@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.corundumstudio.socketio.namespace.Namespace;
 
+/** 连接事件监听器注解的扫描器 **/
 public class ScannerEngine {
 
     private static final Logger log = LoggerFactory.getLogger(ScannerEngine.class);

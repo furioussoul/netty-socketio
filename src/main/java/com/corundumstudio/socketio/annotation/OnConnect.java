@@ -20,15 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
-/**
- * Annotation that defines <b>Connect</b> handler.
- *
- * Arguments in method:
- *
- *   - SocketIOClient (required)
- *
- */
+//事件'Connect'的处理器的注解。
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OnConnect {

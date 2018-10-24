@@ -24,6 +24,7 @@ import com.corundumstudio.socketio.handler.SocketIOException;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.corundumstudio.socketio.namespace.Namespace;
 
+/** 断开连接事件监听器注解扫描接口 **/
 public class OnDisconnectScanner implements AnnotationScanner {
 
     @Override

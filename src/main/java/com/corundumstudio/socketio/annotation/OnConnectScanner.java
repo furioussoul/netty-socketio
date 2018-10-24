@@ -24,6 +24,7 @@ import com.corundumstudio.socketio.handler.SocketIOException;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.namespace.Namespace;
 
+/** 连接事件监听器注解扫描接口 **/
 public class OnConnectScanner implements AnnotationScanner  {
 
     @Override

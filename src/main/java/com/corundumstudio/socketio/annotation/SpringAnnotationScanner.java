@@ -31,6 +31,7 @@ import org.springframework.util.ReflectionUtils.MethodFilter;
 
 import com.corundumstudio.socketio.SocketIOServer;
 
+/** 给事件注册监听器，并将监听器注册到spring容器 **/
 public class SpringAnnotationScanner implements BeanPostProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SpringAnnotationScanner.class);

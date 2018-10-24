@@ -20,14 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Annotation that defines <b>Disconnect</b> handler.
- *
- * Arguments in method:
- *
- *   - SocketIOClient (required)
- *
- */
+//事件'DisConnect'的事件的注解。
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OnDisconnect {

@@ -20,12 +20,25 @@ import java.lang.reflect.Method;
 
 import com.corundumstudio.socketio.namespace.Namespace;
 
+/** 监听器注解扫描接口 **/
 public interface AnnotationScanner {
 
+    //获取支持被扫描的注解类型。
     Class<? extends Annotation> getScanAnnotation();
 
-    void addListener(Namespace namespace, Object object, Method method, Annotation annotation);
+    /**
+     * 在命名空间上注册监听器。
+     * @param namespace 命名空间
+     * @param listener 监听器
+     * @param method 监听器的每个方法
+     * @param annotation 监听器的回调方法的注解
+     */
+    void addListener(Namespace namespace, Object listener, Method method, Annotation annotation);
 
+    /**
+     * 验证监听器方法上的注解是否配置正确。
+     * @param method
+     * @param clazz
+     */
     void validate(Method method, Class<?> clazz);
-
 }
