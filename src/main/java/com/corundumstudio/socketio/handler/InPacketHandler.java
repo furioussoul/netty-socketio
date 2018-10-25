@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 package com.corundumstudio.socketio.handler;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.corundumstudio.socketio.listener.ExceptionListener;
 import com.corundumstudio.socketio.messages.PacketsMessage;
@@ -32,6 +23,13 @@ import com.corundumstudio.socketio.protocol.Packet;
 import com.corundumstudio.socketio.protocol.PacketDecoder;
 import com.corundumstudio.socketio.protocol.PacketType;
 import com.corundumstudio.socketio.transport.NamespaceClient;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Sharable
 public class InPacketHandler extends SimpleChannelInboundHandler<PacketsMessage> {
@@ -53,7 +51,7 @@ public class InPacketHandler extends SimpleChannelInboundHandler<PacketsMessage>
 
     @Override
     protected void channelRead0(io.netty.channel.ChannelHandlerContext ctx, PacketsMessage message)
-                throws Exception {
+            throws Exception {
         ByteBuf content = message.getContent();
         ClientHead client = message.getClient();
 

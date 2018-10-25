@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,14 +15,6 @@
  */
 package com.corundumstudio.socketio;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.corundumstudio.socketio.misc.IterableCollection;
 import com.corundumstudio.socketio.namespace.Namespace;
 import com.corundumstudio.socketio.protocol.Packet;
@@ -30,6 +22,9 @@ import com.corundumstudio.socketio.protocol.PacketType;
 import com.corundumstudio.socketio.store.StoreFactory;
 import com.corundumstudio.socketio.store.pubsub.DispatchMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubType;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Fully thread-safe.
@@ -49,9 +44,9 @@ public class BroadcastOperations implements ClientOperations {
     private void dispatch(Packet packet) {
         Map<String, Set<String>> namespaceRooms = new HashMap<String, Set<String>>();
         for (SocketIOClient socketIOClient : clients) {
-            Namespace namespace = (Namespace)socketIOClient.getNamespace();
+            Namespace namespace = (Namespace) socketIOClient.getNamespace();
             Set<String> rooms = namespace.getRooms(socketIOClient);
-            
+
             Set<String> roomsList = namespaceRooms.get(namespace.getName());
             if (roomsList == null) {
                 roomsList = new HashSet<String>();
@@ -106,7 +101,7 @@ public class BroadcastOperations implements ClientOperations {
         }
         dispatch(packet);
     }
-    
+
     @Override
     public void sendEvent(String name, Object... data) {
         Packet packet = new Packet(PacketType.MESSAGE);
@@ -122,7 +117,7 @@ public class BroadcastOperations implements ClientOperations {
         }
         ackCallback.loopFinished();
     }
-    
+
     public <T> void sendEvent(String name, Object data, SocketIOClient excludedClient, BroadcastAckCallback<T> ackCallback) {
         for (SocketIOClient client : clients) {
             if (client.getSessionId().equals(excludedClient.getSessionId())) {

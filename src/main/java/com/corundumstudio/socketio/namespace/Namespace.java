@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,24 +15,7 @@
  */
 package com.corundumstudio.socketio.namespace;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentMap;
-
-import com.corundumstudio.socketio.AckMode;
-import com.corundumstudio.socketio.AckRequest;
-import com.corundumstudio.socketio.BroadcastOperations;
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.MultiTypeArgs;
-import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIONamespace;
+import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.annotation.ScannerEngine;
 import com.corundumstudio.socketio.listener.*;
 import com.corundumstudio.socketio.protocol.JsonSupport;
@@ -41,12 +24,17 @@ import com.corundumstudio.socketio.store.StoreFactory;
 import com.corundumstudio.socketio.store.pubsub.JoinLeaveMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubType;
 import com.corundumstudio.socketio.transport.NamespaceClient;
-
 import io.netty.util.internal.PlatformDependent;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
+
 /**
- * Hub object for all clients in one namespace.
- * Namespace shares by different namespace-clients.
+ * Thread safe
+ * 所有的连接都存储在一个命名空间。
+ * 不同的命名空间-连接共享一个命名空间。
+ * 不同的命名空间有不同的策略。
  *
  * @see com.corundumstudio.socketio.transport.NamespaceClient
  */
@@ -90,7 +78,7 @@ public class Namespace implements SocketIONamespace {
 
     @Override
     public void addMultiTypeEventListener(String eventName, MultiTypeEventListener listener,
-            Class<?>... eventClass) {
+                                          Class<?>... eventClass) {
         EventEntry entry = eventListeners.get(eventName);
         if (entry == null) {
             entry = new EventEntry();
@@ -102,7 +90,7 @@ public class Namespace implements SocketIONamespace {
         entry.addListener(listener);
         jsonSupport.addEventMapping(name, eventName, eventClass);
     }
-    
+
     @Override
     public void removeAllListeners(String eventName) {
         EventEntry<?> entry = eventListeners.remove(eventName);
@@ -174,7 +162,7 @@ public class Namespace implements SocketIONamespace {
     }
 
     public void onDisconnect(SocketIOClient client) {
-        Set<String> joinedRooms = client.getAllRooms();        
+        Set<String> joinedRooms = client.getAllRooms();
         allClients.remove(client.getSessionId());
 
         leave(getName(), client.getSessionId());
@@ -351,7 +339,7 @@ public class Namespace implements SocketIONamespace {
         List<SocketIOClient> result = new ArrayList<SocketIOClient>();
         for (UUID sessionId : sessionIds) {
             SocketIOClient client = allClients.get(sessionId);
-            if(client != null) {
+            if (client != null) {
                 result.add(client);
             }
         }

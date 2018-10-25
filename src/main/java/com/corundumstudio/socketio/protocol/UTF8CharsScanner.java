@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,11 @@ public class UTF8CharsScanner {
      * handling when contained in text segment.
      */
     static final int[] sInputCodes;
+    /**
+     * Additionally we can combine UTF-8 decoding info into similar data table.
+     */
+    static final int[] sInputCodesUtf8;
+
     static {
         /*
          * 96 would do for most cases (backslash is ascii 94) but if we want to
@@ -40,10 +45,6 @@ public class UTF8CharsScanner {
         sInputCodes = table;
     }
 
-    /**
-     * Additionally we can combine UTF-8 decoding info into similar data table.
-     */
-    static final int[] sInputCodesUtf8;
     static {
         int[] table = new int[sInputCodes.length];
         System.arraycopy(sInputCodes, 0, table, 0, sInputCodes.length);
@@ -70,25 +71,25 @@ public class UTF8CharsScanner {
     private int getCharTailIndex(ByteBuf inputBuffer, int i) {
         int c = (int) inputBuffer.getByte(i) & 0xFF;
         switch (sInputCodesUtf8[c]) {
-        case 2: // 2-byte UTF
-            i += 2;
-            break;
-        case 3: // 3-byte UTF
-            i += 3;
-            break;
-        case 4: // 4-byte UTF
-            i += 4;
-            break;
-        default:
-            i++;
-            break;
+            case 2: // 2-byte UTF
+                i += 2;
+                break;
+            case 3: // 3-byte UTF
+                i += 3;
+                break;
+            case 4: // 4-byte UTF
+                i += 4;
+                break;
+            default:
+                i++;
+                break;
         }
         return i;
     }
 
     public int getLength(ByteBuf inputBuffer, int start) {
         int len = 0;
-        for (int i = start; i < inputBuffer.writerIndex();) {
+        for (int i = start; i < inputBuffer.writerIndex(); ) {
             i = getCharTailIndex(inputBuffer, i);
             len++;
         }
@@ -98,11 +99,11 @@ public class UTF8CharsScanner {
     public int getActualLength(ByteBuf inputBuffer, int length) {
         int len = 0;
         int start = inputBuffer.readerIndex();
-        for (int i = inputBuffer.readerIndex(); i < inputBuffer.readableBytes() + inputBuffer.readerIndex();) {
+        for (int i = inputBuffer.readerIndex(); i < inputBuffer.readableBytes() + inputBuffer.readerIndex(); ) {
             i = getCharTailIndex(inputBuffer, i);
             len++;
             if (length == len) {
-                return i-start;
+                return i - start;
             }
         }
         throw new IllegalStateException();
@@ -110,7 +111,7 @@ public class UTF8CharsScanner {
 
 
     public int findTailIndex(ByteBuf inputBuffer, int start, int end,
-            int charsToRead) {
+                             int charsToRead) {
         int len = 0;
         int i = start;
         while (i < end) {

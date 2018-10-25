@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,8 @@
 package com.corundumstudio.socketio;
 
 import com.corundumstudio.socketio.listener.*;
+import com.corundumstudio.socketio.namespace.Namespace;
+import com.corundumstudio.socketio.namespace.NamespacesHub;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -27,16 +29,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.corundumstudio.socketio.namespace.Namespace;
-import com.corundumstudio.socketio.namespace.NamespacesHub;
 
 /**
  * Fully thread-safe.
@@ -121,7 +119,7 @@ public class SocketIOServer implements ClientListeners {
 
     /**
      * Start server asynchronously
-     * 
+     *
      * @return void
      */
     public Future<Void> startAsync() {
@@ -137,8 +135,8 @@ public class SocketIOServer implements ClientListeners {
 
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup, workerGroup)
-        .channel(channelClass)
-        .childHandler(pipelineFactory);
+                .channel(channelClass)
+                .childHandler(pipelineFactory);
         applyConnectionOptions(b);
 
         InetSocketAddress addr = new InetSocketAddress(configCopy.getPort());
@@ -253,7 +251,7 @@ public class SocketIOServer implements ClientListeners {
     public void addListeners(Object listeners) {
         mainNamespace.addListeners(listeners);
     }
-    
+
     @Override
     public void addListeners(Object listeners, Class<?> listenersClass) {
         mainNamespace.addListeners(listeners, listenersClass);

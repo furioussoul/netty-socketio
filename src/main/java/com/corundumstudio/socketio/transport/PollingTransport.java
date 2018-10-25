@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -110,22 +110,22 @@ public class PollingTransport extends ChannelInboundHandlerAdapter {
     }
 
     private void handleMessage(FullHttpRequest req, UUID sessionId, QueryStringDecoder queryDecoder, ChannelHandlerContext ctx)
-                                                                                throws IOException {
-            String origin = req.headers().get(HttpHeaderNames.ORIGIN);
-            if (queryDecoder.parameters().containsKey("disconnect")) {
-                ClientHead client = clientsBox.get(sessionId);
-                client.onChannelDisconnect();
-                ctx.channel().writeAndFlush(new XHRPostMessage(origin, sessionId));
-            } else if (HttpMethod.POST.equals(req.method())) {
-                onPost(sessionId, ctx, origin, req.content());
-            } else if (HttpMethod.GET.equals(req.method())) {
-                onGet(sessionId, ctx, origin);
-            } else if (HttpMethod.OPTIONS.equals(req.method())) {
-                onOptions(sessionId, ctx, origin);
-            } else {
-                log.error("Wrong {} method invocation for {}", req.method(), sessionId);
-                sendError(ctx);
-            }
+            throws IOException {
+        String origin = req.headers().get(HttpHeaderNames.ORIGIN);
+        if (queryDecoder.parameters().containsKey("disconnect")) {
+            ClientHead client = clientsBox.get(sessionId);
+            client.onChannelDisconnect();
+            ctx.channel().writeAndFlush(new XHRPostMessage(origin, sessionId));
+        } else if (HttpMethod.POST.equals(req.method())) {
+            onPost(sessionId, ctx, origin, req.content());
+        } else if (HttpMethod.GET.equals(req.method())) {
+            onGet(sessionId, ctx, origin);
+        } else if (HttpMethod.OPTIONS.equals(req.method())) {
+            onOptions(sessionId, ctx, origin);
+        } else {
+            log.error("Wrong {} method invocation for {}", req.method(), sessionId);
+            sendError(ctx);
+        }
     }
 
     private void onOptions(UUID sessionId, ChannelHandlerContext ctx, String origin) {
@@ -140,7 +140,7 @@ public class PollingTransport extends ChannelInboundHandlerAdapter {
     }
 
     private void onPost(UUID sessionId, ChannelHandlerContext ctx, String origin, ByteBuf content)
-                                                                                throws IOException {
+            throws IOException {
         ClientHead client = clientsBox.get(sessionId);
         if (client == null) {
             log.error("{} is not registered. Closing connection", sessionId);

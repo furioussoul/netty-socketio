@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,10 +47,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientHead {
 
-    private static final Logger log = LoggerFactory.getLogger(ClientHead.class);
-
     public static final AttributeKey<ClientHead> CLIENT = AttributeKey.<ClientHead>valueOf("client");
-
+    private static final Logger log = LoggerFactory.getLogger(ClientHead.class);
     private final AtomicBoolean disconnected = new AtomicBoolean();
     private final Map<Namespace, NamespaceClient> namespaceClients = PlatformDependent.newConcurrentHashMap();
     private final Map<Transport, TransportState> channels = new HashMap<Transport, TransportState>(2);
@@ -60,18 +58,17 @@ public class ClientHead {
     private final Store store;
     private final DisconnectableHub disconnectableHub;
     private final AckManager ackManager;
-    private ClientsBox clientsBox;
     private final CancelableScheduler disconnectScheduler;
     private final Configuration configuration;
-
+    private ClientsBox clientsBox;
     private Packet lastBinaryPacket;
 
     // TODO use lazy set
     private volatile Transport currentTransport;
 
     public ClientHead(UUID sessionId, AckManager ackManager, DisconnectableHub disconnectable,
-            StoreFactory storeFactory, HandshakeData handshakeData, ClientsBox clientsBox, Transport transport, CancelableScheduler disconnectScheduler,
-            Configuration configuration) {
+                      StoreFactory storeFactory, HandshakeData handshakeData, ClientsBox clientsBox, Transport transport, CancelableScheduler disconnectScheduler,
+                      Configuration configuration) {
         this.sessionId = sessionId;
         this.ackManager = ackManager;
         this.disconnectableHub = disconnectable;
@@ -101,7 +98,7 @@ public class ClientHead {
 
     public void releasePollingChannel(Channel channel) {
         TransportState state = channels.get(Transport.POLLING);
-        if(channel.equals(state.getChannel())) {
+        if (channel.equals(state.getChannel())) {
             clientsBox.remove(channel);
             state.update(null);
         }
@@ -207,9 +204,9 @@ public class ClientHead {
 
     public void disconnect() {
         ChannelFuture future = send(new Packet(PacketType.DISCONNECT));
-		if(future != null) {
-			future.addListener(ChannelFutureListener.CLOSE);
-		}
+        if (future != null) {
+            future.addListener(ChannelFutureListener.CLOSE);
+        }
 
         onChannelDisconnect();
     }
@@ -261,11 +258,12 @@ public class ClientHead {
         return channels.get(transport).getPacketsQueue();
     }
 
-    public void setLastBinaryPacket(Packet lastBinaryPacket) {
-        this.lastBinaryPacket = lastBinaryPacket;
-    }
     public Packet getLastBinaryPacket() {
         return lastBinaryPacket;
+    }
+
+    public void setLastBinaryPacket(Packet lastBinaryPacket) {
+        this.lastBinaryPacket = lastBinaryPacket;
     }
 
 }

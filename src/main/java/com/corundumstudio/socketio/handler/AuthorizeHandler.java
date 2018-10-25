@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,26 +15,7 @@
  */
 package com.corundumstudio.socketio.handler;
 
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.Disconnectable;
-import com.corundumstudio.socketio.DisconnectableHub;
-import com.corundumstudio.socketio.HandshakeData;
-import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.Transport;
+import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.ack.AckManager;
 import com.corundumstudio.socketio.messages.HttpErrorMessage;
 import com.corundumstudio.socketio.namespace.Namespace;
@@ -48,21 +29,23 @@ import com.corundumstudio.socketio.scheduler.SchedulerKey.Type;
 import com.corundumstudio.socketio.store.StoreFactory;
 import com.corundumstudio.socketio.store.pubsub.ConnectMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubType;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.http.DefaultHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 @Sharable
 public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Disconnectable {
@@ -80,7 +63,7 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
     private final ClientsBox clientsBox;
 
     public AuthorizeHandler(String connectPath, CancelableScheduler scheduler, Configuration configuration, NamespacesHub namespacesHub, StoreFactory storeFactory,
-            DisconnectableHub disconnectable, AckManager ackManager, ClientsBox clientsBox) {
+                            DisconnectableHub disconnectable, AckManager ackManager, ClientsBox clientsBox) {
         super();
         this.connectPath = connectPath;
         this.configuration = configuration;
@@ -146,9 +129,9 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
         }
 
         HandshakeData data = new HandshakeData(req.headers(), params,
-                                                (InetSocketAddress)channel.remoteAddress(),
-                                                (InetSocketAddress)channel.localAddress(),
-                                                    req.uri(), origin != null && !origin.equalsIgnoreCase("null"));
+                (InetSocketAddress) channel.remoteAddress(),
+                (InetSocketAddress) channel.localAddress(),
+                req.uri(), origin != null && !origin.equalsIgnoreCase("null"));
 
         boolean result = false;
         try {
@@ -193,11 +176,11 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
 
         String[] transports = {};
         if (configuration.getTransports().contains(Transport.WEBSOCKET)) {
-            transports = new String[] {"websocket"};
+            transports = new String[]{"websocket"};
         }
 
         AuthPacket authPacket = new AuthPacket(sessionId, transports, configuration.getPingInterval(),
-                                                                            configuration.getPingTimeout());
+                configuration.getPingTimeout());
         Packet packet = new Packet(PacketType.OPEN);
         packet.setData(authPacket);
         client.send(packet);
@@ -208,34 +191,34 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
     }
 
     /**
-        This method will either generate a new random sessionId or will retrieve the value stored
-        in the "io" cookie.  Failures to parse will cause a logging warning to be generated and a
-        random uuid to be generated instead (same as not passing a cookie in the first place).
-    */
+     This method will either generate a new random sessionId or will retrieve the value stored
+     in the "io" cookie.  Failures to parse will cause a logging warning to be generated and a
+     random uuid to be generated instead (same as not passing a cookie in the first place).
+     */
     private UUID generateOrGetSessionIdFromRequest(HttpHeaders headers) {
         List<String> values = headers.getAll("io");
         if (values.size() == 1) {
             try {
                 return UUID.fromString(values.get(0));
-            } catch ( IllegalArgumentException iaex ) {
+            } catch (IllegalArgumentException iaex) {
                 log.warn("Malformed UUID received for session! io=" + values.get(0));
             }
         }
-        
-        for (String cookieHeader: headers.getAll(HttpHeaderNames.COOKIE)) {
+
+        for (String cookieHeader : headers.getAll(HttpHeaderNames.COOKIE)) {
             Set<Cookie> cookies = ServerCookieDecoder.LAX.decode(cookieHeader);
 
             for (Cookie cookie : cookies) {
                 if (cookie.name().equals("io")) {
                     try {
                         return UUID.fromString(cookie.value());
-                    } catch ( IllegalArgumentException iaex ) {
+                    } catch (IllegalArgumentException iaex) {
                         log.warn("Malformed UUID received for session! io=" + cookie.value());
                     }
                 }
             }
         }
-        
+
         return UUID.randomUUID();
     }
 

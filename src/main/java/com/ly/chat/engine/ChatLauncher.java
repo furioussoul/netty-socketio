@@ -4,18 +4,11 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.handler.AuthorizeHandler;
-import com.corundumstudio.socketio.handler.ClientHead;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
-import com.corundumstudio.socketio.namespace.NamespacesHub;
-import com.corundumstudio.socketio.protocol.JsonSupport;
 import com.corundumstudio.socketio.store.RedissonStoreFactory;
-import com.corundumstudio.socketio.store.Store;
-import com.corundumstudio.socketio.store.StoreFactory;
 import com.corundumstudio.socketio.store.pubsub.ConnectMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubListener;
-import com.corundumstudio.socketio.store.pubsub.PubSubStore;
 import com.corundumstudio.socketio.store.pubsub.PubSubType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatLauncher {
@@ -36,7 +28,7 @@ public class ChatLauncher {
     public static void main(String[] args) throws InterruptedException {
         final Logger log = LoggerFactory.getLogger(ChatLauncher.class);
 
-        Map<String,Object> multiple = new ConcurrentHashMap<>();
+        Map<String, Object> multiple = new ConcurrentHashMap<>();
         final int[] receivedCount = {0};
 
         Configuration config = new Configuration();
@@ -71,14 +63,14 @@ public class ChatLauncher {
                     e.printStackTrace();
                 }
             }
-        },ConnectMessage.class);
+        }, ConnectMessage.class);
 
         server.addConnectListener(new ConnectListener() {
             @Override
             public void onConnect(SocketIOClient client) {
                 List<String> token = client.getHandshakeData().getUrlParams().get("token");
-                if(null != token && token.size() != 0){
-                    multiple.put(token.get(0),client);
+                if (null != token && token.size() != 0) {
+                    multiple.put(token.get(0), client);
                 }
 
                 server.getConfiguration().getStoreFactory().pubSubStore().publish(PubSubType.CONNECT, new ConnectMessage(client.getSessionId()));

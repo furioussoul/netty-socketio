@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +15,15 @@
  */
 package com.corundumstudio.socketio.annotation;
 
+import com.corundumstudio.socketio.namespace.Namespace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.corundumstudio.socketio.namespace.Namespace;
 
 /** 连接事件监听器注解的扫描器 **/
 public class ScannerEngine {
@@ -32,7 +31,7 @@ public class ScannerEngine {
     private static final Logger log = LoggerFactory.getLogger(ScannerEngine.class);
 
     private static final List<? extends AnnotationScanner> annotations =
-                    Arrays.asList(new OnConnectScanner(), new OnDisconnectScanner(), new OnEventScanner());
+            Arrays.asList(new OnConnectScanner(), new OnDisconnectScanner(), new OnEventScanner());
 
     private Method findSimilarMethod(Class<?> objectClazz, Method method) {
         Method[] methods = objectClazz.getDeclaredMethods();

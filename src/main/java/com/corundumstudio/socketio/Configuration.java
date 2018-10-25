@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 package com.corundumstudio.socketio;
-
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import com.corundumstudio.socketio.handler.SuccessAuthorizationListener;
 import com.corundumstudio.socketio.listener.DefaultExceptionListener;
@@ -27,6 +23,9 @@ import com.corundumstudio.socketio.store.MemoryStoreFactory;
 import com.corundumstudio.socketio.store.StoreFactory;
 
 import javax.net.ssl.KeyManagerFactory;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 public class Configuration {
 
@@ -186,6 +185,7 @@ public class Configuration {
     public int getPort() {
         return port;
     }
+
     public void setPort(int port) {
         this.port = port;
     }
@@ -193,6 +193,7 @@ public class Configuration {
     public int getBossThreads() {
         return bossThreads;
     }
+
     public void setBossThreads(int bossThreads) {
         this.bossThreads = bossThreads;
     }
@@ -200,8 +201,13 @@ public class Configuration {
     public int getWorkerThreads() {
         return workerThreads;
     }
+
     public void setWorkerThreads(int workerThreads) {
         this.workerThreads = workerThreads;
+    }
+
+    public int getPingInterval() {
+        return pingInterval;
     }
 
     /**
@@ -212,8 +218,9 @@ public class Configuration {
     public void setPingInterval(int heartbeatIntervalSecs) {
         this.pingInterval = heartbeatIntervalSecs;
     }
-    public int getPingInterval() {
-        return pingInterval;
+
+    public int getPingTimeout() {
+        return pingTimeout;
     }
 
     /**
@@ -225,9 +232,7 @@ public class Configuration {
     public void setPingTimeout(int heartbeatTimeoutSecs) {
         this.pingTimeout = heartbeatTimeoutSecs;
     }
-    public int getPingTimeout() {
-        return pingTimeout;
-    }
+
     public boolean isHeartbeatsEnabled() {
         return pingTimeout > 0;
     }
@@ -235,6 +240,7 @@ public class Configuration {
     public String getContext() {
         return context;
     }
+
     public void setContext(String context) {
         this.context = context;
     }
@@ -255,6 +261,10 @@ public class Configuration {
         this.allowCustomRequests = allowCustomRequests;
     }
 
+    public String getKeyStorePassword() {
+        return keyStorePassword;
+    }
+
     /**
      * SSL key store password
      *
@@ -263,8 +273,9 @@ public class Configuration {
     public void setKeyStorePassword(String keyStorePassword) {
         this.keyStorePassword = keyStorePassword;
     }
-    public String getKeyStorePassword() {
-        return keyStorePassword;
+
+    public InputStream getKeyStore() {
+        return keyStore;
     }
 
     /**
@@ -275,8 +286,9 @@ public class Configuration {
     public void setKeyStore(InputStream keyStore) {
         this.keyStore = keyStore;
     }
-    public InputStream getKeyStore() {
-        return keyStore;
+
+    public String getKeyStoreFormat() {
+        return keyStoreFormat;
     }
 
     /**
@@ -287,8 +299,9 @@ public class Configuration {
     public void setKeyStoreFormat(String keyStoreFormat) {
         this.keyStoreFormat = keyStoreFormat;
     }
-    public String getKeyStoreFormat() {
-        return keyStoreFormat;
+
+    public int getMaxHttpContentLength() {
+        return maxHttpContentLength;
     }
 
     /**
@@ -300,8 +313,9 @@ public class Configuration {
     public void setMaxHttpContentLength(int value) {
         this.maxHttpContentLength = value;
     }
-    public int getMaxHttpContentLength() {
-        return maxHttpContentLength;
+
+    public List<Transport> getTransports() {
+        return transports;
     }
 
     /**
@@ -309,14 +323,15 @@ public class Configuration {
      *
      * @param transports - list of transports
      */
-    public void setTransports(Transport ... transports) {
+    public void setTransports(Transport... transports) {
         if (transports.length == 0) {
             throw new IllegalArgumentException("Transports list can't be empty");
         }
         this.transports = Arrays.asList(transports);
     }
-    public List<Transport> getTransports() {
-        return transports;
+
+    public String getPackagePrefix() {
+        return packagePrefix;
     }
 
     /**
@@ -333,8 +348,9 @@ public class Configuration {
     public void setPackagePrefix(String packagePrefix) {
         this.packagePrefix = packagePrefix;
     }
-    public String getPackagePrefix() {
-        return packagePrefix;
+
+    public boolean isPreferDirectBuffer() {
+        return preferDirectBuffer;
     }
 
     /**
@@ -348,8 +364,9 @@ public class Configuration {
     public void setPreferDirectBuffer(boolean preferDirectBuffer) {
         this.preferDirectBuffer = preferDirectBuffer;
     }
-    public boolean isPreferDirectBuffer() {
-        return preferDirectBuffer;
+
+    public StoreFactory getStoreFactory() {
+        return storeFactory;
     }
 
     /**
@@ -365,8 +382,9 @@ public class Configuration {
     public void setStoreFactory(StoreFactory clientStoreFactory) {
         this.storeFactory = clientStoreFactory;
     }
-    public StoreFactory getStoreFactory() {
-        return storeFactory;
+
+    public AuthorizationListener getAuthorizationListener() {
+        return authorizationListener;
     }
 
     /**
@@ -381,8 +399,9 @@ public class Configuration {
     public void setAuthorizationListener(AuthorizationListener authorizationListener) {
         this.authorizationListener = authorizationListener;
     }
-    public AuthorizationListener getAuthorizationListener() {
-        return authorizationListener;
+
+    public ExceptionListener getExceptionListener() {
+        return exceptionListener;
     }
 
     /**
@@ -396,13 +415,11 @@ public class Configuration {
     public void setExceptionListener(ExceptionListener exceptionListener) {
         this.exceptionListener = exceptionListener;
     }
-    public ExceptionListener getExceptionListener() {
-        return exceptionListener;
-    }
 
     public SocketConfig getSocketConfig() {
         return socketConfig;
     }
+
     /**
      * TCP socket configuration
      *
@@ -410,6 +427,10 @@ public class Configuration {
      */
     public void setSocketConfig(SocketConfig socketConfig) {
         this.socketConfig = socketConfig;
+    }
+
+    public AckMode getAckMode() {
+        return ackMode;
     }
 
     /**
@@ -423,14 +444,11 @@ public class Configuration {
     public void setAckMode(AckMode ackMode) {
         this.ackMode = ackMode;
     }
-    public AckMode getAckMode() {
-        return ackMode;
-    }
-
 
     public String getTrustStoreFormat() {
         return trustStoreFormat;
     }
+
     public void setTrustStoreFormat(String trustStoreFormat) {
         this.trustStoreFormat = trustStoreFormat;
     }
@@ -438,6 +456,7 @@ public class Configuration {
     public InputStream getTrustStore() {
         return trustStore;
     }
+
     public void setTrustStore(InputStream trustStore) {
         this.trustStore = trustStore;
     }
@@ -445,6 +464,7 @@ public class Configuration {
     public String getTrustStorePassword() {
         return trustStorePassword;
     }
+
     public void setTrustStorePassword(String trustStorePassword) {
         this.trustStorePassword = trustStorePassword;
     }
@@ -452,10 +472,14 @@ public class Configuration {
     public String getKeyManagerFactoryAlgorithm() {
         return keyManagerFactoryAlgorithm;
     }
+
     public void setKeyManagerFactoryAlgorithm(String keyManagerFactoryAlgorithm) {
         this.keyManagerFactoryAlgorithm = keyManagerFactoryAlgorithm;
     }
 
+    public int getMaxFramePayloadLength() {
+        return maxFramePayloadLength;
+    }
 
     /**
      * Set maximum websocket frame content length limit
@@ -465,8 +489,9 @@ public class Configuration {
     public void setMaxFramePayloadLength(int maxFramePayloadLength) {
         this.maxFramePayloadLength = maxFramePayloadLength;
     }
-    public int getMaxFramePayloadLength() {
-        return maxFramePayloadLength;
+
+    public int getUpgradeTimeout() {
+        return upgradeTimeout;
     }
 
     /**
@@ -477,8 +502,9 @@ public class Configuration {
     public void setUpgradeTimeout(int upgradeTimeout) {
         this.upgradeTimeout = upgradeTimeout;
     }
-    public int getUpgradeTimeout() {
-        return upgradeTimeout;
+
+    public boolean isAddVersionHeader() {
+        return addVersionHeader;
     }
 
     /**
@@ -491,8 +517,9 @@ public class Configuration {
     public void setAddVersionHeader(boolean addVersionHeader) {
         this.addVersionHeader = addVersionHeader;
     }
-    public boolean isAddVersionHeader() {
-        return addVersionHeader;
+
+    public String getOrigin() {
+        return origin;
     }
 
     /**
@@ -507,15 +534,17 @@ public class Configuration {
     public void setOrigin(String origin) {
         this.origin = origin;
     }
-    public String getOrigin() {
-        return origin;
-    }
 
     public boolean isUseLinuxNativeEpoll() {
         return useLinuxNativeEpoll;
     }
+
     public void setUseLinuxNativeEpoll(boolean useLinuxNativeEpoll) {
         this.useLinuxNativeEpoll = useLinuxNativeEpoll;
+    }
+
+    public String getSSLProtocol() {
+        return sslProtocol;
     }
 
     /**
@@ -526,8 +555,9 @@ public class Configuration {
     public void setSSLProtocol(String sslProtocol) {
         this.sslProtocol = sslProtocol;
     }
-    public String getSSLProtocol() {
-        return sslProtocol;
+
+    public int getFirstDataTimeout() {
+        return firstDataTimeout;
     }
 
     /**
@@ -540,8 +570,9 @@ public class Configuration {
     public void setFirstDataTimeout(int firstDataTimeout) {
         this.firstDataTimeout = firstDataTimeout;
     }
-    public int getFirstDataTimeout() {
-        return firstDataTimeout;
+
+    public boolean isHttpCompression() {
+        return httpCompression;
     }
 
     /**
@@ -555,8 +586,9 @@ public class Configuration {
     public void setHttpCompression(boolean httpCompression) {
         this.httpCompression = httpCompression;
     }
-    public boolean isHttpCompression() {
-        return httpCompression;
+
+    public boolean isWebsocketCompression() {
+        return websocketCompression;
     }
 
     /**
@@ -569,9 +601,6 @@ public class Configuration {
      */
     public void setWebsocketCompression(boolean websocketCompression) {
         this.websocketCompression = websocketCompression;
-    }
-    public boolean isWebsocketCompression() {
-        return websocketCompression;
     }
 
 }

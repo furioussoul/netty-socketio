@@ -11,7 +11,53 @@ public class ChatObject {
     public ChatObject() {
     }
 
-    public static class Msg{
+    public ChatObject(String userName, String message) {
+        super();
+        this.userName = userName;
+        this.message = message;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public Msg getMsg() {
+        return msg;
+    }
+
+    public void setMsg(Msg msg) {
+        this.msg = msg;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public static class Msg {
         private String text;
         private Long date;
         private String name;
@@ -48,52 +94,6 @@ public class ChatObject {
         public void setHeaderUrl(String headerUrl) {
             this.headerUrl = headerUrl;
         }
-    }
-
-
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getMid() {
-        return mid;
-    }
-
-    public void setMid(String mid) {
-        this.mid = mid;
-    }
-
-    public Msg getMsg() {
-        return msg;
-    }
-
-    public void setMsg(Msg msg) {
-        this.msg = msg;
-    }
-
-    public ChatObject(String userName, String message) {
-        super();
-        this.userName = userName;
-        this.message = message;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
     }
 
 }
