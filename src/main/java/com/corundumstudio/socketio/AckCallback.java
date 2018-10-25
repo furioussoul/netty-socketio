@@ -17,17 +17,13 @@ package com.corundumstudio.socketio;
 
 
 /**
- * Base ack callback class.
+ * ack回调接口
  *
- * Notifies about acknowledgement received from client
- * via {@link #onSuccess} callback method.
+ * ack触发时调用{@link #onSuccess(Object)}方法
  *
- * By default it may wait acknowledgement from client
- * while {@link SocketIOClient} is alive. Timeout can be
- * defined {@link #timeout} as constructor argument.
+ * 客户端连接存活时，它会被客户端发送的ack触发。或者超时（超时时间内客户端没有发送ack）时触发（{@link #timeout}）。
  *
- * This object is NOT actual anymore if {@link #onSuccess} or
- * {@link #onTimeout} was executed.
+ * 每个ack对象都是新的，当{@link #onSuccess(Object)}被触发后本对象会被移除。
  *
  * @param <T> - any serializable type
  *
