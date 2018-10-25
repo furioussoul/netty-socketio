@@ -9,7 +9,7 @@ public class AckChatLauncher {
 
         Configuration config = new Configuration();
         config.setHostname("localhost");
-        config.setPort(9092);
+        config.setPort(9292);
 
         final SocketIOServer server = new SocketIOServer(config);
         server.addEventListener("ackevent1", ChatObject.class, new DataListener<ChatObject>() {
