@@ -1,6 +1,6 @@
 Netty-socketio Overview
 ===
-This project is an open-source Java implementation of [Socket.IO](http://socket.io/) com.server. Based on [Netty](http://netty.io/) com.server framework.  
+This project is an open-source Java implementation of [Socket.IO](http://socket.io/) server. Based on [Netty](http://netty.io/) server framework.  
 
 Checkout [Demo project](https://github.com/mrniko/netty-socketio-demo)
 
@@ -64,7 +64,7 @@ Fixed - the "fin_close" problem
 Feature - added local socket address for the connection (thanks to @SergeyGrigorev)  
 Feature - `addPingListener` method added (thanks to @lovebing)  
 Feature - add ThreadFactory for HashedWheelTimer (thanks to @hand515)  
-Fixed - changed SO_LINGER to be handled as child channel (not com.server channel) option (thanks to @robymus)  
+Fixed - changed SO_LINGER to be handled as child channel (not server channel) option (thanks to @robymus)  
 Fixed - ByteBuf leak if binary attachments are used  
 Fixed - restore session from Cookie (thanks to @wuxudong)  
 Fixed - NumberFormatException when b64 is bool value (thanks to @vonway)  
@@ -96,7 +96,7 @@ Fixed - DotNET client request handling
 Fixed - Packet length format parsing  
 Fixed - skipping 'd=' in packet  
 Fixed - Polling clients sporatically get prematurely disconnected (thanks to lpage30)  
-Fixed - connections stay open forever if com.server sent `close` packet  
+Fixed - connections stay open forever if server sent `close` packet  
 Fixed - compatibility with Redisson latest version  
 
 #### 30-Nov-2015 - version 1.7.8 released  
@@ -191,7 +191,7 @@ Improvement - _ScheduledExecutorService_ replaced with _HashedWheelTimer_
 
 #### 08-Feb-2014 - version 1.6.2 released
 Fixed - wrong namespace client disconnect handling  
-Fixed - exception in onConnect/onDisconnect/isAuthorized methods leads to com.server hang  
+Fixed - exception in onConnect/onDisconnect/isAuthorized methods leads to server hang  
 __Breaking api change__ - SocketIOClient.sendEvent methods signature changed  
 Improvement - multi type events support via _MultiTypeEventListener_ and _OnEvent_ annotation  
 Improvement - multi type events ack support via _MultiTypeAckCallback_  
@@ -206,7 +206,7 @@ Feature - authorization support
 Fixed - XHR-pooling transport regression  
 Fixed - Websocket transport regression  
 Fixed - namespace NPE in PacketHandler  
-Fixed - executors shutdown during com.server stop  
+Fixed - executors shutdown during server stop  
 Feature - client store (Memory, [Redis](http://redis.io/), [Hazelcast](http://www.hazelcast.com/)) support  
 Feature - distributed broadcast across netty-socketio nodes ([Redis](http://redis.io/), [Hazelcast](http://www.hazelcast.com/)) support  
 Feature - OSGi support (thanks to rdevera)  

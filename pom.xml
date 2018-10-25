@@ -7,7 +7,7 @@
     <version>1.7.17-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>NettySocketIO</name>
-    <description>Socket.IO com.server implemented on Java</description>
+    <description>Socket.IO server implemented on Java</description>
     <inceptionYear>2012</inceptionYear>
     <url>https://github.com/mrniko/netty-socketio</url>
 
@@ -300,7 +300,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.server.Launcher.ChatLauncher</mainClass>
+                            <mainClass>com.ly.chat.com.ly.chat.engine.ChatLauncher</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
