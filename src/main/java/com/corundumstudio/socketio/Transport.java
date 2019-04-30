@@ -19,11 +19,18 @@ import com.corundumstudio.socketio.transport.PollingTransport;
 import com.corundumstudio.socketio.transport.WebSocketTransport;
 
 /**
+ * 协议
  * WEBSOCKET,POLLING
  */
 public enum Transport {
 
+    /**
+     * websocket协议
+     */
     WEBSOCKET(WebSocketTransport.NAME),
+    /**
+     * 轮询
+     */
     POLLING(PollingTransport.NAME);
 
     private final String value;

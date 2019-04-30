@@ -52,13 +52,21 @@ public class SocketIOServer implements ClientListeners {
 
     private SocketIOChannelInitializer pipelineFactory = new SocketIOChannelInitializer();
 
+    /**
+     * boss线程调度器（用于接收client请求）
+     */
     private EventLoopGroup bossGroup;
+
+    /**
+     * worker线程调度器（用于处理具体的读写操作）
+     */
     private EventLoopGroup workerGroup;
 
     public SocketIOServer(Configuration configuration) {
         this.configuration = configuration;
         this.configCopy = new Configuration(configuration);
         namespacesHub = new NamespacesHub(configCopy);
+        //默认只用/命名空间
         mainNamespace = addNamespace(Namespace.DEFAULT_NAME);
     }
 

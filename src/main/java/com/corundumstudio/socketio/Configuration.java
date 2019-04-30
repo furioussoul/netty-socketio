@@ -29,14 +29,30 @@ import java.util.List;
 
 public class Configuration {
 
+    /**
+     * 异常监听器
+     */
     private ExceptionListener exceptionListener = new DefaultExceptionListener();
 
+    /**
+     * 二级目录
+     */
     private String context = "/socket.io";
 
+    /**
+     *  协议
+     */
     private List<Transport> transports = Arrays.asList(Transport.WEBSOCKET, Transport.POLLING);
 
+    /**
+     *
+     */
     private int bossThreads = 0; // 0 = current_processors_amount * 2
     private int workerThreads = 0; // 0 = current_processors_amount * 2
+
+    /**
+     * epoll，只能在linux上有性能提升
+     */
     private boolean useLinuxNativeEpoll;
 
     private boolean allowCustomRequests = false;

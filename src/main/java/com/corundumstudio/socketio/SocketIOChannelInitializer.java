@@ -41,6 +41,9 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.*;
 import java.security.KeyStore;
 
+/**
+ * 初始化构建channel
+ */
 public class SocketIOChannelInitializer extends ChannelInitializer<Channel> implements DisconnectableHub {
 
     public static final String SOCKETIO_ENCODER = "socketioEncoder";
@@ -65,7 +68,13 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
 
     private ClientsBox clientsBox = new ClientsBox();
     private AuthorizeHandler authorizeHandler;
+    /**
+     * 轮询Inbound handler
+     */
     private PollingTransport xhrPollingTransport;
+    /**
+     * channelInbound handler
+     */
     private WebSocketTransport webSocketTransport;
     private WebSocketServerCompressionHandler webSocketTransportCompression = new WebSocketServerCompressionHandler();
     private EncoderHandler encoderHandler;

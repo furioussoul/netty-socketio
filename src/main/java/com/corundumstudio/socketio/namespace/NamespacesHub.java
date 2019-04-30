@@ -26,6 +26,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ *  命名空间
+ */
 public class NamespacesHub {
 
     private final ConcurrentMap<String, SocketIONamespace> namespaces = PlatformDependent.newConcurrentHashMap();
