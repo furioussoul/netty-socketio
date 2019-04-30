@@ -38,7 +38,7 @@ import java.util.UUID;
 
 /**
  * Fully thread-safe.
- *
+ * 服务器，监听客户端动作
  */
 public class SocketIOServer implements ClientListeners {
 
@@ -50,6 +50,9 @@ public class SocketIOServer implements ClientListeners {
     private final NamespacesHub namespacesHub;
     private final SocketIONamespace mainNamespace;
 
+    /**
+     * ChannelInitializer
+     */
     private SocketIOChannelInitializer pipelineFactory = new SocketIOChannelInitializer();
 
     /**
@@ -66,7 +69,7 @@ public class SocketIOServer implements ClientListeners {
         this.configuration = configuration;
         this.configCopy = new Configuration(configuration);
         namespacesHub = new NamespacesHub(configCopy);
-        //默认只用/命名空间
+        //默认命名空间
         mainNamespace = addNamespace(Namespace.DEFAULT_NAME);
     }
 

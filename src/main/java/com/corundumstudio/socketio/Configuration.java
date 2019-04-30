@@ -27,6 +27,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 配置
+ */
 public class Configuration {
 
     /**
@@ -45,9 +48,12 @@ public class Configuration {
     private List<Transport> transports = Arrays.asList(Transport.WEBSOCKET, Transport.POLLING);
 
     /**
-     *
+     * 接收请求的boss线程数
      */
     private int bossThreads = 0; // 0 = current_processors_amount * 2
+    /**
+     * 处理请求的worker线程数
+     */
     private int workerThreads = 0; // 0 = current_processors_amount * 2
 
     /**

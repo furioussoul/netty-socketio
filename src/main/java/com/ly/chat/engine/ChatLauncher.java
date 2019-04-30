@@ -38,7 +38,7 @@ public class ChatLauncher {
         config.setWorkerThreads(8);
 
         Config rConfig = new Config();
-        rConfig.useSingleServer().setAddress("redis://47.97.220.227:6379");
+        rConfig.useSingleServer().setAddress("redis://47.111.27.208:6379");
         RedissonClient redissonClient = Redisson.create(rConfig);
         config.setStoreFactory(new RedissonStoreFactory(redissonClient));
 

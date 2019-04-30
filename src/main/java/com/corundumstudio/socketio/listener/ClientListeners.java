@@ -15,6 +15,9 @@
  */
 package com.corundumstudio.socketio.listener;
 
+/**
+ * 监听客户端动作
+ */
 public interface ClientListeners {
 
     void addMultiTypeEventListener(String eventName, MultiTypeEventListener listener, Class<?>... eventClass);

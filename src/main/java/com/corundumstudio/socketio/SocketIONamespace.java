@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * 命名空间接口
+ * 命名空间
  *
  */
 public interface SocketIONamespace extends ClientListeners {

@@ -67,22 +67,36 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
     private AckManager ackManager;
 
     private ClientsBox clientsBox = new ClientsBox();
+
+    /**
+     * 鉴权Inbound handler
+     */
     private AuthorizeHandler authorizeHandler;
     /**
      * 轮询Inbound handler
      */
     private PollingTransport xhrPollingTransport;
     /**
-     * channelInbound handler
+     * Websocket Inbound handler
      */
     private WebSocketTransport webSocketTransport;
+
     private WebSocketServerCompressionHandler webSocketTransportCompression = new WebSocketServerCompressionHandler();
+
+    /**
+     * 接包 Inbound handler
+     */
+    private InPacketHandler packetHandler;
+
+    /**
+     * encode OutBound handler
+     */
     private EncoderHandler encoderHandler;
+
     private WrongUrlHandler wrongUrlHandler;
 
     private CancelableScheduler scheduler = new HashedWheelTimeoutScheduler();
 
-    private InPacketHandler packetHandler;
     private SSLContext sslContext;
     private Configuration configuration;
 
@@ -157,7 +171,15 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
      * @param pipeline - channel pipeline
      */
     protected void addSocketioHandlers(ChannelPipeline pipeline) {
+
+        /**
+         * inbound handler
+         */
         pipeline.addLast(HTTP_REQUEST_DECODER, new HttpRequestDecoder());
+
+        /**
+         * inbound handler
+         */
         pipeline.addLast(HTTP_AGGREGATOR, new HttpObjectAggregator(configuration.getMaxHttpContentLength()) {
             @Override
             protected Object newContinueResponse(HttpMessage start, int maxContentLength,
@@ -166,24 +188,43 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
             }
 
         });
+
+        /**
+         * outbound handler
+         */
         pipeline.addLast(HTTP_ENCODER, new HttpResponseEncoder());
 
         if (configuration.isHttpCompression()) {
             pipeline.addLast(HTTP_COMPRESSION, new HttpContentCompressor());
         }
 
+        /**
+         * inbound handler
+         */
         pipeline.addLast(PACKET_HANDLER, packetHandler);
-
+        /**
+         * inbound handler
+         */
         pipeline.addLast(AUTHORIZE_HANDLER, authorizeHandler);
+        /**
+         * inbound handler
+         */
         pipeline.addLast(XHR_POLLING_TRANSPORT, xhrPollingTransport);
         // TODO use single instance when https://github.com/netty/netty/issues/4755 will be resolved
         if (configuration.isWebsocketCompression()) {
             pipeline.addLast(WEB_SOCKET_TRANSPORT_COMPRESSION, new WebSocketServerCompressionHandler());
         }
+        /**
+         * inbound handler
+         */
         pipeline.addLast(WEB_SOCKET_TRANSPORT, webSocketTransport);
-
+        /**
+         * outbound handler
+         */
         pipeline.addLast(SOCKETIO_ENCODER, encoderHandler);
-
+        /**
+         * inbound handler
+         */
         pipeline.addLast(WRONG_URL_HANDLER, wrongUrlHandler);
     }
 

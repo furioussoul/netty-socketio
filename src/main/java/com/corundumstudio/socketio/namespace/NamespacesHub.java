@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- *  命名空间
+ *  命名空间hub
  */
 public class NamespacesHub {
 
